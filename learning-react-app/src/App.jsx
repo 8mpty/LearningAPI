@@ -13,8 +13,9 @@ import Login from './pages/Login';
 import http from './http';
 import UserContext from './contexts/UserContext';
 
-import Schedule from './pages/Schedules';
 import Schedules from './pages/Schedules';
+import AddSchedule from './pages/AddSchedule';
+import EditSchedule from './pages/EditSchedule';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -70,7 +71,9 @@ function App() {
               <Route path={"/schedules"} element={<Schedules />} />
               <Route path={"/tutorials"} element={<Tutorials />} />
               <Route path={"/addtutorial"} element={<AddTutorial />} />
+              <Route path={"/addschedule"} element={<AddSchedule />} />
               <Route path={"/edittutorial/:id"} element={<EditTutorial />} />
+              <Route path={"/editschedule/:id"} element={<EditSchedule />} />
               <Route path={"/register"} element={<Register />} />
               <Route path={"/login"} element={<Login />} />
               <Route path={"/form"} element={<MyForm />} />

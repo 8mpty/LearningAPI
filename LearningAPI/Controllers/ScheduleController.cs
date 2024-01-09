@@ -37,14 +37,22 @@ namespace LearningAPI.Controllers
         [ProducesResponseType(typeof(IEnumerable<ScheduleDTO>), StatusCodes.Status200OK)]
         public IActionResult GetAll(string? search)
         {
-            IQueryable<Schedule> result = _context.Schedules;
-            if(search != null)
+            try
             {
-                result = result.Where(x => x.Title.Contains(search) || x.Description.Contains(search));
+                IQueryable<Schedule> result = _context.Schedules.Include(t => t.User);
+                if (search != null)
+                {
+                    result = result.Where(x => x.Title.Contains(search) || x.Description.Contains(search));
+                }
+                var list = result.OrderByDescending(x => x.CreatedAt).ToList();
+                IEnumerable<ScheduleDTO> data = list.Select(t => _mapper.Map<ScheduleDTO>(t));
+                return Ok(data);
             }
-            var list = result.OrderByDescending(x => x.CreatedAt).ToList();
-            IEnumerable<ScheduleDTO> data = list.Select(t => _mapper.Map<ScheduleDTO>(t));
-            return Ok(list);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error when get all schedules");
+                return StatusCode(500);
+            }
         }
 
         [HttpGet("{id}")]
@@ -65,21 +73,31 @@ namespace LearningAPI.Controllers
         [ProducesResponseType(typeof(ScheduleDTO), StatusCodes.Status200OK)]
         public IActionResult AddSchedule(AddScheduleRequest schedule)
         {
-            var now = DateTime.Now;
-            var mySchedule = new Schedule()
+            try
             {
-                Title = schedule.Title.Trim(),
-                Description = schedule.Description.Trim(),
-                CreatedAt = now,
-                UpdatedAt = now,
-            };
-
-            _context.Schedules.Add(mySchedule);
-            _context.SaveChanges();
-
-            Schedule? newSchedule = _context.Schedules.Include(t => t.User).FirstOrDefault(t => t.Id == mySchedule.Id);
-            ScheduleDTO scheduleDTO = _mapper.Map<ScheduleDTO>(newSchedule);
-            return Ok(schedule);
+                int userId = GetUserId();
+                var now = DateTime.Now;
+                var mySchedule = new Schedule()
+                {
+                    Title = schedule.Title.Trim(),
+                    Description = schedule.Description.Trim(),
+                    //ImageFile = schedule.ImageFile,
+                    CreatedAt = now,
+                    UpdatedAt = now,
+                    UserId = userId
+                };
+                _context.Schedules.Add(mySchedule);
+                _context.SaveChanges();
+                Schedule? newSchedule = _context.Schedules.Include(t => t.User)
+                .FirstOrDefault(t => t.Id == mySchedule.Id);
+                ScheduleDTO scheduleDTO = _mapper.Map<ScheduleDTO>(newSchedule);
+                return Ok(scheduleDTO);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error when adding tutorial");
+                return StatusCode(500);
+            }
         }
 
         [HttpPut("{id}"), Authorize]
