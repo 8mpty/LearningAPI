@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "Hash": "mxSl6H3bSp6EEMlreNP0maOV4bZnTkZEOkTtJ5H6EaM=",
+  "Source": "LearningAPI",
+  "BasePath": "_content/LearningAPI",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "LearningAPI\\wwwroot",
+      "Source": "LearningAPI",
+      "ContentRoot": "C:\\Users\\Empty\\Documents\\EDP\\Practical7\\LearningAPI\\LearningAPI\\wwwroot\\",
+      "BasePath": "_content/LearningAPI",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "C:\\Users\\Empty\\Documents\\EDP\\Practical7\\LearningAPI\\LearningAPI\\wwwroot\\uploads\\CDcuf6mq-8.jpg",
+      "SourceId": "LearningAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Empty\\Documents\\EDP\\Practical7\\LearningAPI\\LearningAPI\\wwwroot\\",
+      "BasePath": "_content/LearningAPI",
+      "RelativePath": "uploads/CDcuf6mq-8.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\CDcuf6mq-8.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\Empty\\Documents\\EDP\\Practical7\\LearningAPI\\LearningAPI\\wwwroot\\uploads\\OSosFnwiYP.jpg",
+      "SourceId": "LearningAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Empty\\Documents\\EDP\\Practical7\\LearningAPI\\LearningAPI\\wwwroot\\",
+      "BasePath": "_content/LearningAPI",
+      "RelativePath": "uploads/OSosFnwiYP.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\uploads\\OSosFnwiYP.jpg"
+    }
+  ]
+}
