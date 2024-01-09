@@ -28,6 +28,18 @@ namespace LearningAPI.Controllers
             return Ok(list);
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetSchedule(int id)
+        {
+            Schedule? schedule = _context.Schedules.Find(id);
+            if(schedule == null)
+            {
+                return NotFound();
+            }
+            return Ok(schedule);
+        }
+
+
         [HttpPost]
         public IActionResult AddSchedule(Schedule schedule)
         {
@@ -43,6 +55,36 @@ namespace LearningAPI.Controllers
             _context.Schedules.Add(mySchedule);
             _context.SaveChanges();
             return Ok(schedule);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateSchedule(int id, Schedule schedule)
+        {
+            var mySchedule = _context.Schedules.Find(id);
+            if(mySchedule == null)
+            {
+                return NotFound();
+            }
+            mySchedule.Title = schedule.Title.Trim();
+            mySchedule.Description = schedule.Description.Trim();
+            mySchedule.UpdatedAt = DateTime.Now;
+
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteSchedule(int id)
+        {
+            var mySchedule = _context.Schedules.Find(id);
+            if(mySchedule == null)
+            {
+                return NotFound();
+            }
+
+            _context.Schedules.Remove(mySchedule);
+            _context.SaveChanges();
+            return Ok();
         }
     }
 }
