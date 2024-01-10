@@ -81,6 +81,8 @@ namespace LearningAPI.Controllers
                 {
                     Title = schedule.Title.Trim(),
                     Description = schedule.Description.Trim(),
+                    SelectedDate = schedule.SelectedDate,
+                    SelectedTime = schedule.SelectedTime,
                     //ImageFile = schedule.ImageFile,
                     CreatedAt = now,
                     UpdatedAt = now,

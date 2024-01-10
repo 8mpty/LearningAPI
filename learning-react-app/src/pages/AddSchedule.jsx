@@ -6,7 +6,9 @@ import {
   TextField,
   Button,
   Grid,
-  InputLabel, Select, MenuItem
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -24,10 +26,14 @@ function AddSchedule() {
   const navigate = useNavigate();
   const [imageFile, setImageFile] = useState(null);
 
+  const currentYear = new Date().getFullYear();
+
   const formik = useFormik({
     initialValues: {
       title: "",
       description: "",
+      selectedDate: dayjs(), // Initialize with a default date
+      selectedTime: dayjs(), // Initialize with a default time
     },
     validationSchema: yup.object({
       title: yup
@@ -85,7 +91,6 @@ function AddSchedule() {
 
   const handleChange = (event) => {
     setAge(event.target.value);
-    console.log(event.target.value);
   };
 
   return (
@@ -128,31 +133,53 @@ function AddSchedule() {
                   formik.touched.description && formik.errors.description
                 }
               />
+              <DatePicker
+                label="Please Choose A Date"
+                defaultValue={formik.values.selectedDate}
+                onChange={(newDate) =>
+                  formik.setFieldValue("selectedDate", newDate)
+                }
+                error={
+                  formik.touched.selectedDate &&
+                  Boolean(formik.errors.selectedDate)
+                }
+                helperText={
+                  formik.touched.selectedDate && formik.errors.selectedDate
+                }
+                //minDate={new Date(2024, 1, 1)}
+              />
+              <TimePicker
+                label="Please Choose A Time"
+                defaultValue={formik.values.selectedTime}
+                onChange={(newTime) =>
+                  formik.setFieldValue("selectedTime", newTime)
+                }
+                error={
+                  formik.touched.selectedTime &&
+                  Boolean(formik.errors.selectedTime)
+                }
+                helperText={
+                  formik.touched.selectedTime && formik.errors.selectedTime
+                }
+              />
               <Box sx={{ minWidth: 120 }}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Available Places</InputLabel>
+                  <InputLabel id="demo-simple-select-label">
+                    Available Places
+                  </InputLabel>
                   <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={age}
                     label="Age"
-                    onChange={handleChange}>
+                    onChange={handleChange}
+                  >
                     <MenuItem value={"jg"}>Jurong</MenuItem>
                     <MenuItem value={"bl"}>Boon Lay</MenuItem>
                     <MenuItem value={"cck"}>Choa Chu Kang</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
-              <DatePicker
-                label="Please Choose A Date"
-                defaultValue={dayjs("2022-04-17")}
-                onChange={"Date is"+ handleChange}
-              />
-              <TimePicker
-                label="Please Choose A Time"
-                defaultValue={dayjs("2022-04-17T15:30")}
-                onChange={console.log(e)}
-              />
             </Grid>
             {/* <Grid item xs={12} md={6} lg={4}>
               <Box sx={{ textAlign: "center", mt: 2 }}>
