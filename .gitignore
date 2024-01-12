@@ -128,3 +128,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+*.vsidx
+
+LearningAPI/wwwroot/uploads/*.jpg

@@ -11,6 +11,7 @@
 
 body {
   margin: 0;
+  padding: 0;
 }
 
 .aspect-ratio-container {
@@ -18,6 +19,37 @@ body {
   padding-bottom: 56.25%;
   /* 16:9 */
 }
+
+.image-size {
+  position: relative;
+  padding-bottom: 50%;
+  margin-bottom: -20%;
+  margin-top: 0%;
+  /* 16:9 */
+}
+
+.image-size img {
+  position: absolute;
+  width: 100%;
+  height: 65%;
+  object-fit: cover;
+}
+
+.image-size-view {
+  position: relative;
+  padding-bottom: 50%;
+  margin-bottom: -25%;
+  /* 16:9 */
+}
+
+.image-size-view img {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  object-fit: cover;
+}
+
+
 
 .aspect-ratio-container img {
   position: absolute;

@@ -16,16 +16,16 @@ import {
   Search,
   Clear,
   Edit,
-  DateRangeOutlined,
-  TimerOutlined,
 } from "@mui/icons-material";
 import http from "../http";
 import dayjs from "dayjs";
+import UserContext from "../contexts/UserContext";
 import global from "../global";
 
-function Schedules() {
+function IndividualSchedules() {
   const [scheduleList, setScheduleList] = useState([]);
   const [search, setSearch] = useState("");
+  const { user } = useContext(UserContext);
 
   const onSearchChange = (e) => {
     setSearch(e.target.value);
@@ -65,7 +65,7 @@ function Schedules() {
   return (
     <Box>
       <Typography variant="h5" sx={{ my: 2 }}>
-        Events
+        Schedules
       </Typography>
 
       <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
@@ -82,28 +82,42 @@ function Schedules() {
           <Clear />
         </IconButton>
         <Box sx={{ flexGrow: 1 }} />
+        {user && (
+          <Link to="/addschedule" style={{ textDecoration: "none" }}>
+            <Button variant="contained">Add</Button>
+          </Link>
+        )}
       </Box>
 
       <Grid container spacing={2}>
-        {scheduleList.map((schedule, i) => {
-          return (
-            <Grid item xs={12} md={6} lg={4} key={schedule.id}>
-              <Link to={`/viewevent/${schedule.id}`} style={{ textDecoration: "none" }}>
+        {scheduleList
+          .filter((schedule) => !user || user.id === schedule.userId)
+          .map((schedule, i) => {
+            return (
+              <Grid item xs={12} md={6} lg={4} key={schedule.id}>
                 <Card>
                   {schedule.imageFile && (
                     <Box className="image-size">
                       <img
                         alt="tutorial"
-                        src={`${import.meta.env.VITE_FILE_BASE_URL}${schedule.imageFile}`}
+                        src={`${import.meta.env.VITE_FILE_BASE_URL}${
+                          schedule.imageFile
+                        }`}
                       ></img>
                     </Box>
                   )}
-                  
                   <CardContent>
                     <Box sx={{ display: "flex", mb: 1 }}>
                       <Typography variant="h6" sx={{ flexGrow: 1 }}>
                         {schedule.title}
                       </Typography>
+                      {user && user.id === schedule.userId && (
+                        <Link to={`/editschedule/${schedule.id}`}>
+                          <IconButton color="primary" sx={{ padding: "4px" }}>
+                            <Edit />
+                          </IconButton>
+                        </Link>
+                      )}
                     </Box>
                     <Box
                       sx={{ display: "flex", alignItems: "center", mb: 1 }}
@@ -112,45 +126,28 @@ function Schedules() {
                       <AccountCircle sx={{ mr: 1 }} />
                       <Typography>{schedule.user?.name}</Typography>
                     </Box>
-
-                    <Box sx={{ display: "flex", alignItems: "center", mb: 1 }} color="text.secondary" >
-                      <DateRangeOutlined sx={{ mr: 1 }} />
-                      <Typography>Start Date: </Typography>
-                      <Typography>
-                        {dayjs(schedule.selectedDate).format("DD MMMM YYYY")}
-                      </Typography>
-                    </Box>
-
-                    {/* <Box sx={{ display: "flex", alignItems: "center", mb: 1 }} color="text.secondary" >
-                      <TimerOutlined sx={{ mr: 1 }} />
-                      <Typography>Start Time: </Typography>
-                      <Typography>
-                        {dayjs(schedule.selectedTime).format("HH:mm")}
-                      </Typography>
-                    </Box> */}
-
-                    {/* <Box sx={{ display: "flex", alignItems: "center", mb: 1 }} color="text.secondary">
+                    <Box
+                      sx={{ display: "flex", alignItems: "center", mb: 1 }}
+                      color="text.secondary"
+                    >
                       <AccessTime sx={{ mr: 1 }} />
                       <Typography>
                         {dayjs(schedule.createdAt).format(
                           global.datetimeFormat
                         )}
                       </Typography>
-                    </Box> */}
-
+                    </Box>
                     {/* <Typography sx={{ whiteSpace: "pre-wrap" }}>
-                      <Typography>Description: </Typography>
                       {schedule.description}
                     </Typography> */}
                   </CardContent>
                 </Card>
-              </Link>
-            </Grid>
-          );
-        })}
+              </Grid>
+            );
+          })}
       </Grid>
     </Box>
   );
 }
 
-export default Schedules;
+export default IndividualSchedules;

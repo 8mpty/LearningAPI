@@ -15,9 +15,9 @@ namespace LearningAPI.Controllers
     {
         private readonly MyDbContext _context;
         private readonly IMapper _mapper;
-        private readonly ILogger<TutorialController> _logger;
+        private readonly ILogger<ScheduleController> _logger;
 
-        public ScheduleController(MyDbContext context, IMapper mapper, ILogger<TutorialController> logger)
+        public ScheduleController(MyDbContext context, IMapper mapper, ILogger<ScheduleController> logger)
         {
             _context = context;
             _mapper = mapper;
@@ -69,38 +69,38 @@ namespace LearningAPI.Controllers
         }
 
 
-        [HttpPost, Authorize]
-        [ProducesResponseType(typeof(ScheduleDTO), StatusCodes.Status200OK)]
-        public IActionResult AddSchedule(AddScheduleRequest schedule)
-        {
-            try
+            [HttpPost, Authorize]
+            [ProducesResponseType(typeof(ScheduleDTO), StatusCodes.Status200OK)]
+            public IActionResult AddSchedule(AddScheduleRequest schedule)
             {
-                int userId = GetUserId();
-                var now = DateTime.Now;
-                var mySchedule = new Schedule()
+                try
                 {
-                    Title = schedule.Title.Trim(),
-                    Description = schedule.Description.Trim(),
-                    SelectedDate = schedule.SelectedDate,
-                    SelectedTime = schedule.SelectedTime,
-                    //ImageFile = schedule.ImageFile,
-                    CreatedAt = now,
-                    UpdatedAt = now,
-                    UserId = userId
-                };
-                _context.Schedules.Add(mySchedule);
-                _context.SaveChanges();
-                Schedule? newSchedule = _context.Schedules.Include(t => t.User)
-                .FirstOrDefault(t => t.Id == mySchedule.Id);
-                ScheduleDTO scheduleDTO = _mapper.Map<ScheduleDTO>(newSchedule);
-                return Ok(scheduleDTO);
+                    int userId = GetUserId();
+                    var now = DateTime.Now;
+                    var mySchedule = new Schedule()
+                    {
+                        Title = schedule.Title.Trim(),
+                        Description = schedule.Description.Trim(),
+                        SelectedDate = schedule.SelectedDate,
+                        SelectedTime = schedule.SelectedTime,
+                        ImageFile = schedule.ImageFile,
+                        CreatedAt = now,
+                        UpdatedAt = now,
+                        UserId = userId
+                    };
+                    _context.Schedules.Add(mySchedule);
+                    _context.SaveChanges();
+                    Schedule? newSchedule = _context.Schedules.Include(t => t.User)
+                    .FirstOrDefault(t => t.Id == mySchedule.Id);
+                    ScheduleDTO scheduleDTO = _mapper.Map<ScheduleDTO>(newSchedule);
+                    return Ok(scheduleDTO);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error when adding schedule");
+                    return StatusCode(500);
+                }
             }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error when adding tutorial");
-                return StatusCode(500);
-            }
-        }
 
         [HttpPut("{id}"), Authorize]
         public IActionResult UpdateSchedule(int id, UpdateScheduleRequest schedule)
